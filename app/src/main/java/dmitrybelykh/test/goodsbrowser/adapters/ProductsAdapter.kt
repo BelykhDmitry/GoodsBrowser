@@ -15,7 +15,7 @@ import dmitrybelykh.test.goodsbrowser.services.UriHeaders.urlWithHeaders
 
 class ProductsAdapter() : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
-    private var productList: List<ProductEntity>? = null
+    private var productList: List<ProductEntity> = ArrayList()
     private var loadMoreListener: LoadMoreListener? = null
     private var onItemClickListener: ProductsAdapter.OnItemClickListener? = null
 
@@ -27,15 +27,15 @@ class ProductsAdapter() : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder
     }
 
     override fun getItemCount(): Int {
-        return if (productList != null) productList?.size!! else 0
+        return productList.size
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val entity = productList?.get(position)
-        holder.textView.setText(entity?.name)
+        val entity = productList.get(position)
+        holder.textView.setText(entity.name)
         Glide.with(holder.itemView.context)
             .load(
-                if (entity?.imageMini != null)
+                if (entity.imageMini != null)
                     urlWithHeaders(entity.imageMini)
                 else Color.LTGRAY
             )
@@ -58,7 +58,6 @@ class ProductsAdapter() : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder
 
     fun setData(list: List<ProductEntity>) {
         this.productList = list
-        notifyDataSetChanged()
     }
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
